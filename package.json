@@ -4,6 +4,7 @@
   "description": "Tracking MOS ingestion",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.17.1",
     "datatables": "^1.10.13",
     "dateformat": "^3.0.2",
     "express": "^4.16.2",

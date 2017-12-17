@@ -1,23 +1,6 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var today = new Date();
 var entry = {};
-// var airportLookup = require('airport-lookup');
-
-var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "http://localhost:3000/api/airports",
-  "method": "GET",
-  "headers": {
-    "access-control-allow-origin": "http://localhost:3000",
-    "cache-control": "no-cache",
-    "postman-token": "94148ba0-0fd8-1594-0f45-84c5b8559169"
-  }
-}
-
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
-
 var run = {
     getDate: function() {
         var dd = today.getDate();
@@ -85,35 +68,30 @@ var run = {
     // },
     getInput: function() {
         console.log('Getting Input...');
-        entry.flight_code = $('#flight_code_input').val();
-        entry.departure_airport_code = $('#departure_airport_code_input').val();
-        entry.arrival_airport_code = $('#arrival_airport_code_input').val();
-        entry.departure_date = $('#departure_date_input').val();
-        entry.departure_time = $('#departure_time_input').val();
-        entry.departure_city = $('#departure_city_input').val();
-        // entry.departure_country = $('#departure_country_input').val();
+        entry.location_name = $('#location_name_input').val();
+        entry.location_area = $('#location_area_input').val();
+        entry.address = $('#address_input').val();
+        entry.coordinates = $('#coordinates_input').val();
         entry.arrival_time = $('#arrival_time_input').val();
         entry.arrival_date = $('#arrival_date_input').val();
-        entry.arrival_city = $('#arrival_city_input').val();
-        // entry.arrival_country = $('arrival_country_input').val();
+        entry.notes = $('#notes_input').val();
+        entry.location_type = $('location_type_input').val();
         console.log('Input:', entry);
     },
 
-    getDepartureCodeInput: function() {
-      entry.departure_airport_code = $('#departure_airport_code_input').val();
-      airportToFind = entry.departure_airport_code;
-      console.log(airportToFind);
-    },
-
-    populateCityFields: function (entry) {
-      console.log(city_name);
-      $('#departure_city_input').val(city_name);
-    },
-
+    // getCurrRecord(reports){
+    //   var streak = 0;
+    //   var i = 0;
+    //   while(reports[i].success){
+    //     streak++;
+    //     i++;
+    //   }
+    //   return streak;
+    // },
 
     post: function(ent) {
         console.log('Posting:', ent);
-        $.ajax("http://localhost:3000/api/flights", {
+        $.ajax("http://localhost:3000/api/checkins", {
             async: false,
             method: 'POST',
             data: ent,
@@ -121,18 +99,6 @@ var run = {
                 console.log('Posted: ' + data + '\nStatus: ' + status);
             }
         });
-    },
-
-    getDepatureCodeApi: function (ent) {
-      console.log('Getting:', ent);
-      $.ajax("http://localhost:3000/api/airports", {
-          async: false,
-          method: 'GET',
-          data: ent,
-          function(data, status) {
-              console.log('Got: ' + data + '\nStatus: ' + status);
-          }
-      });
     }
 };
 
@@ -144,45 +110,21 @@ $(document).ready(function() {
     // $(this).css('color', 'red');
 });
 
-$('#submit_departure_code').on('click', function() {
-      run.getDepartureCodeInput();
-      run.getDepatureCodeApi();
-      run.populateCityFields();
-      // run.getDepatureCodeApi(entry);
-      //console.log(entry);
-
-});
-
-// $('#submit_departure_code').on('click', function() {
-//       run.getDepartureCodeInput();
-//       run.getDepatureCodeApi(airportToFind);
-//       // run.getDepatureCodeApi(entry);
-//       //console.log(entry);
-//
-// });
-
-
 // Generate today's date in date field
 $('#todays-date-form').on('click', function() {
-    $('#departure_date_input').val(today);
+    $('#arrival_date_input').val(today);
 });
 
-// Use depature date for arrival date
-$('#use-date-again').on('click', function() {
-  entry.departure_date = $('#departure_date_input').val();
-  var dateReversed = '2017-05-15';
-    $('#arrival_date_input').val(entry.departure_date);
-});
-
-$('#submit_flight_form').on('click', function() {
+// Submit form
+$('#submit_checkin_form').on('click', function() {
     // var inputsAreValid = run.inputsValid();
     // console.log('inputsAreValid:', inputsAreValid);
       run.getInput();
       run.post(entry);
 
       //$('#exampleModal').modal('hide');  //close the modal window
-
       // location.reload();
-
       // renderReportHistory();  //"dynamically" re-renders all of the reports (including the newly added one) after the submit button has been clicked.
 });
+
+},{}]},{},[1]);

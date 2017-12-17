@@ -3,12 +3,25 @@ const Reports = require('./models/reports.js').Reports;
 const Erps = require('./models/erp.js').Erps;
 const Flights = require('./models/flights.js').Flights;
 const Checkins = require('./models/checkins.js').Checkins;
+const Airports = require('./models/airports.js').Airports;
+const axios = require('axios');
 var express = require('express');
 var bodyParser = require('body-parser');
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var sequelize = require('sequelize');
+var express = require('express');
+var router = express.Router();
+
+
+router.get('/', function(req, res, next) {
+  request({
+    uri: 'https://iatacodes.org/api/v6/airports?code=RIC'
+  }).pipe(res);
+});
+
+module.exports = router;
 
 module.exports = function(app) {
 
@@ -207,6 +220,15 @@ module.exports = function(app) {
         response.end('Posted');
     });
 
+    // axios.get('https://iatacodes.org/api/v6/airports?code=RIC')
+    //   .then(response => {
+    //     console.log(response.data.code);
+    //     console.log(response.data.name);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+
     // CHECK INS
 
     app.get('/checkins', function(request, response) {
@@ -250,6 +272,27 @@ module.exports = function(app) {
         });
         response.end('Posted');
     });
+
+    ////////////////////////
+    ///// AIRPORTS /////////
+    ////////////////////////
+
+    app.get('/api/airports', function(request, response) {
+        Airports.findAll({
+          where: { id: 2 }
+          // { where:
+          //   { id: 2 }
+          // },
+          // attributes: [
+          //   [sequelize.fn('date_format', sequelize.col('departure_date'), '%Y-%m-%d'), 'depature_date_formatted']
+          // ],
+          // order: ['departure_date'],
+          // limit: 140
+        }).then(airports => {
+            response.json(airports);
+        });
+    });
+
 
 
 }
